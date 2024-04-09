@@ -65,9 +65,7 @@ public class Tabla_asignaturas {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
-		//creacion 
-		
+				
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(6, 225, 234));
 		frame.setBackground(new Color(98, 160, 234));
@@ -106,6 +104,7 @@ public class Tabla_asignaturas {
 		textFieldcod.setBounds(171, 244, 114, 19);
 		frame.getContentPane().add(textFieldcod);
 		textFieldcod.setColumns(10);
+		textFieldcod.setEditable(false);
 		
 		textFieldnombre = new JTextField();
 		textFieldnombre.setColumns(10);
@@ -128,7 +127,7 @@ public class Tabla_asignaturas {
 					Statement stmt = con.createStatement();
 					ResultSet rs = stmt.executeQuery("SELECT * FROM asignatura");
 					while (rs.next()) {
-					 Object[] row = new Object[4];
+					 Object[] row = new Object[3];
 					 row[0] = rs.getInt("codas"); 
 					 row[1] = rs.getString("nombre");
 					 row[2] = rs.getInt("horas");
@@ -165,7 +164,6 @@ public class Tabla_asignaturas {
 				textFieldnombre.setText(model.getValueAt(index, 1).toString());
 				textFieldhoras.setText(model.getValueAt(index, 2).toString());		
 				
-				textFieldcod.setEditable(false);
 			}
 		});
 			
@@ -177,14 +175,12 @@ public class Tabla_asignaturas {
 					
 				con=ConnectionSingleton.getConnection();
 				
-				int codas = Integer.parseInt(textFieldcod.getText());
 				String nombre = textFieldnombre.getText();
 				int horas = Integer.parseInt(textFieldhoras.getText());
 				
-				PreparedStatement ins_ps=con.prepareStatement("INSERT INTO asignatura VALUES (?,?,?)");
-				ins_ps.setInt(1,codas);
-				ins_ps.setString(2, nombre);
-				ins_ps.setInt(3, horas);		
+				PreparedStatement ins_ps=con.prepareStatement("INSERT INTO asignatura VALUES (null,?,?)");
+				ins_ps.setString(1, nombre);
+				ins_ps.setInt(2, horas);		
 				
 				int rowInserted = ins_ps.executeUpdate();
 				
@@ -249,8 +245,6 @@ public class Tabla_asignaturas {
 					}	
 				
 				
-				textFieldcod.setEditable(true);
-
 			}
 		});
 		actualizar.setBounds(428, 316, 117, 25);
